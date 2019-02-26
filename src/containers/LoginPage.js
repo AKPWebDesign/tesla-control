@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TeslaAPI from '../adapters/TeslaAPI';
 import TeslaLogo from '../images/tesla-red.png';
+import styles from './LoginPage.less';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -12,16 +13,32 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="login-page">
-      <div className="tesla-logo-container">
-        <img className="tesla-logo" src={TeslaLogo} alt="Tesla Logo" />
-      </div>
+    <div className={styles.loginPage}>
+      <div className={styles.loginFormContainer}>
+        <div className={styles.teslaLogoContainer}>
+          <img className={styles.teslaLogo} src={TeslaLogo} alt="Tesla Logo" />
+        </div>
 
-      <div className="login-form-container">
-        <form onSubmit={onLogin}>
-          <input type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-          <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <button type="submit">Log In</button>
+        <form onSubmit={onLogin} className={styles.loginForm}>
+          <input
+            type="text"
+            name="username"
+            value={username}
+            placeholder="Email Address"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            name="password"
+            value={password}
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="submit"
+          >
+            Sign In
+          </button>
         </form>
       </div>
     </div>

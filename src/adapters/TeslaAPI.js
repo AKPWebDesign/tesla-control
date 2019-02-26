@@ -14,6 +14,7 @@ const teslaApiClient = axios.create({
 class TeslaAPI {
   constructor() {
     this.subscribers = {};
+    this.auth = null;
   }
 
   login(username, password) {
@@ -43,6 +44,10 @@ class TeslaAPI {
     this.notifySubscribers(false, null);
   }
 
+  setAuth(auth) {
+    this.auth = auth;
+  }
+
   notifySubscribers(isLoggedIn, data = {}) {
     Object.values(this.subscribers).forEach(_ => _(isLoggedIn, data));
   }
@@ -57,24 +62,31 @@ class TeslaAPI {
     }
   }
 
-  authCall(auth, config) {
-    if (!auth) return Promise.resolve(null);
+  authCall(config) {
+    if (!this.auth) return Promise.resolve(null);
     config.headers = {
-      'Authorization': `Bearer ${auth}`,
+      'Authorization': `Bearer ${this.auth}`,
     };
 
     return teslaApiClient(config).then(({ data }) => data.response);
   }
 
-  getVehicles(auth) {
-    return this.authCall(auth, {
+  getVehicles() {
+    return this.authCall({
       url: '/api/1/vehicles',
     });
   }
 
-  getVehicleData(auth, id) {
-    return this.authCall(auth, {
+  getVehicleData(id) {
+    return this.authCall({
       url: `/api/1/vehicles/${id}/vehicle_data`,
+    })
+  }
+
+  wakeUp(id) {
+    return this.authCall({
+      method: 'post',
+      url: `/api/1/vehicles/${id}/wake_up`,
     })
   }
 }

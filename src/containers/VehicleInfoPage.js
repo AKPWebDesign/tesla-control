@@ -15,7 +15,7 @@ const VehicleInfoPage = () => {
     }
 
     if (vehicles === null) {
-      TeslaAPI.getVehicles(userData['access_token'])
+      TeslaAPI.getVehicles()
         .then(_ => setVehicles(_));
     }
 
@@ -23,7 +23,7 @@ const VehicleInfoPage = () => {
       if (vehicles[0].state === 'asleep') {
         return setVehicleData('💤💤💤 car is tired now 💤💤💤');
       }
-      TeslaAPI.getVehicleData(userData['access_token'], vehicles[0].id)
+      TeslaAPI.getVehicleData(vehicles[0].id)
         .then(_ => setVehicleData(_));
     }
   });
@@ -35,9 +35,12 @@ const VehicleInfoPage = () => {
   return (
     <div className="vehicle-info-page">
       <button onClick={() => TeslaAPI.logout()}>Log Out</button>
-      <code>{JSON.stringify(vehicles, null, 2)}</code>
+      { vehicles[0].state === 'asleep' && (
+        <button onClick={() => TeslaAPI.wakeUp(vehicles[0].id)}>Wake Up</button>
+      )}
+      <pre>{JSON.stringify(vehicles, null, 2)}</pre>
       <br /><br />
-      <code>{JSON.stringify(vehicleData, null, 2)}</code>
+      <pre>{JSON.stringify(vehicleData, null, 2)}</pre>
       <br /><br />
       <h2>Option Codes</h2>
       <table className="ui small striped compact padded celled table">

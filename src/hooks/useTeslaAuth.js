@@ -11,6 +11,7 @@ const useTeslaAuth = () => {
   useEffect(() => {
     if (userData) {
       setIsLoggedIn(true);
+      TeslaAPI.setAuth(userData.access_token);
     }
 
     const unsubscribe = TeslaAPI.subscribeToAuthChanges((loggedIn, data) => {
