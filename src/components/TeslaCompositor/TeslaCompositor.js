@@ -33,8 +33,13 @@ const TeslaCompositor = ({ optionCodes, size = 1920, view = viewOptions.TQTR }) 
 
 TeslaCompositor.propTypes = {
   optionCodes: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired,
-  view: PropTypes.oneOf(viewOptions).isRequired,
+  size: PropTypes.number,
+  view: PropTypes.oneOf(Object.values(viewOptions)),
+};
+
+TeslaCompositor.defaultProps = {
+  size: 1920,
+  view: viewOptions.TQTR,
 };
 
 export default TeslaCompositor;

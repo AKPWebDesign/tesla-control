@@ -11,24 +11,30 @@ const VehicleInfoPage = ({ match }) => {
   const [vehicleData, setVehicleData] = useState(null);
 
   useEffect(() => {
-    if (!userData) {
-      return;
+    if (!userData || !match.params.vehicleId) {
+      return () => {};
     }
 
-    if (vehicle === null) {
-      TeslaAPI.getVehicle(match.params.vehicleId)
-        .then(_ => setVehicle(_));
+    const { request, cancel } = TeslaAPI.getVehicle(match.params.vehicleId);
+    request.then(_ => setVehicle(_));
+
+    return () => cancel();
+  }, [match.params.vehicleId, userData]);
+
+  useEffect(() => {
+    if (!userData || !match.params.vehicleId) {
+      return () => {};
     }
 
-    if (vehicle !== null && vehicleData === null) {
-      if (vehicle.state === 'asleep') {
-        setVehicleData('💤💤💤 car is tired now 💤💤💤');
-        return;
-      }
-      TeslaAPI.getVehicleData(match.params.vehicleId)
-        .then(_ => setVehicleData(_));
+    if (!vehicle || vehicle.state === 'asleep') {
+      return () => {};
     }
-  });
+
+    const { request, cancel } = TeslaAPI.getVehicleData(match.params.vehicleId);
+    request.then(_ => setVehicleData(_));
+
+    return () => cancel();
+  }, [match.params.vehicleId, userData, vehicle]);
 
   if (vehicle === null) {
     return 'Loading...';

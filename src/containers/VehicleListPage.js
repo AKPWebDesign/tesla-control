@@ -10,14 +10,14 @@ const VehicleListPage = () => {
 
   useEffect(() => {
     if (!userData) {
-      return;
+      return () => {};
     }
 
-    if (vehicles === null) {
-      TeslaAPI.getVehicles()
-        .then(_ => setVehicles(_));
-    }
-  });
+    const { request, cancel } = TeslaAPI.getVehicles();
+    request.then(_ => setVehicles(_));
+
+    return () => cancel();
+  }, [userData]);
 
   if (vehicles === null) {
     return 'Loading...';
@@ -26,9 +26,7 @@ const VehicleListPage = () => {
   return (
     <div className={styles.vehicleListPage}>
       {vehicles.map(vehicle => (
-        <a href={`/vehicle/${vehicle.id}`} className={styles.vehicleLink}>
-          <VehicleDisplay vehicle={vehicle} key={vehicle.id} />
-        </a>
+        <VehicleDisplay vehicle={vehicle} key={vehicle.id} />
       ))}
     </div>
   );

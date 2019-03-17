@@ -59,38 +59,52 @@ class TeslaAPI {
     };
   }
 
-  authCall(config) {
+  cancellableAuthenticatedCall(config) {
     if (!this.auth) return Promise.resolve(null);
+    const cancelTokenSource = axios.CancelToken.source();
+
     const authenticatedConfig = {
+      cancelToken: cancelTokenSource.token,
       ...config,
       headers: {
         Authorization: `Bearer ${this.auth}`,
       },
     };
 
-    return teslaApiClient(authenticatedConfig).then(({ data }) => data.response);
+    return {
+      request: teslaApiClient(authenticatedConfig)
+        .then(({ data }) => data.response)
+        .catch((e) => {
+          if (axios.isCancel(e)) {
+            /* no-op */
+          } else {
+            console.error(e); // eslint-disable-line no-console
+          }
+        }),
+      cancel: (reason = 'cancelled by requestor') => cancelTokenSource.cancel(reason),
+    };
   }
 
   getVehicles() {
-    return this.authCall({
+    return this.cancellableAuthenticatedCall({
       url: '/api/1/vehicles',
     });
   }
 
   getVehicle(id) {
-    return this.authCall({
+    return this.cancellableAuthenticatedCall({
       url: `/api/1/vehicles/${id}`,
     });
   }
 
   getVehicleData(id) {
-    return this.authCall({
+    return this.cancellableAuthenticatedCall({
       url: `/api/1/vehicles/${id}/vehicle_data`,
     });
   }
 
   wakeUp(id) {
-    return this.authCall({
+    return this.cancellableAuthenticatedCall({
       method: 'post',
       url: `/api/1/vehicles/${id}/wake_up`,
     });
