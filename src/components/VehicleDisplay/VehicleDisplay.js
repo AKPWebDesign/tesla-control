@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './VehicleDisplay.less';
 import TeslaCompositor from '../TeslaCompositor/TeslaCompositor';
 
@@ -12,5 +13,14 @@ const VehicleDisplay = ({ vehicle }) => (
     </div>
   </div>
 );
+
+VehicleDisplay.propTypes = {
+  vehicle: PropTypes.shape({
+    display_name: PropTypes.string.isRequired,
+    option_codes: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    vin: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default VehicleDisplay;

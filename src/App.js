@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
 import classNames from 'classnames';
-import { Redirect, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  Redirect, BrowserRouter as Router, Route, Switch,
+} from 'react-router-dom';
 import TeslaAPI from './adapters/TeslaAPI';
 import useTeslaAuth from './hooks/useTeslaAuth';
 import styles from './App.less';
@@ -30,11 +32,12 @@ const App = () => {
             ) : (
               <Redirect to="/login" />
             )
-          )} />
+          )}
+          />
         </Switch>
       </Router>
     </Suspense>
   );
-}
+};
 
 export default App;

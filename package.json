@@ -18,13 +18,9 @@
     "css-loader": "2.1.0",
     "dotenv": "6.2.0",
     "dotenv-expand": "4.2.0",
-    "eslint": "5.14.0",
     "eslint-config-react-app": "^3.0.7",
     "eslint-loader": "2.1.2",
     "eslint-plugin-flowtype": "3.4.2",
-    "eslint-plugin-import": "2.16.0",
-    "eslint-plugin-jsx-a11y": "6.2.1",
-    "eslint-plugin-react": "7.12.4",
     "file-loader": "3.0.1",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.1",
@@ -41,6 +37,7 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.5.0",
     "postcss-safe-parser": "4.0.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.2",
     "react-app-polyfill": "^0.2.1",
     "react-dev-utils": "^7.0.3",
@@ -61,7 +58,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "lint": "yarn run eslint src/"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -123,7 +121,12 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-react-hooks": "^1.0.2",
+    "eslint": "^5.15.2",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.5.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0"
   }

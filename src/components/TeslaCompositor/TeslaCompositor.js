@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export const viewOptions = {
   REAR: 'STUD_REAR',
@@ -27,7 +28,13 @@ const TeslaCompositor = ({ optionCodes, size = 1920, view = viewOptions.TQTR }) 
     model = '3a1d1c6cdccb462405eee5db90fcbd39';
   }
 
-  return <img src={`https://static-assets.tesla.com/v1/compositor/?model=${model}&view=${view}&size=${size}&options=${optionCodes}&bkba_opt=1`} alt="Tesla Compositor" />
+  return <img src={`https://static-assets.tesla.com/v1/compositor/?model=${model}&view=${view}&size=${size}&options=${optionCodes}&bkba_opt=1`} alt="Tesla Compositor" />;
+};
+
+TeslaCompositor.propTypes = {
+  optionCodes: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
+  view: PropTypes.oneOf(viewOptions).isRequired,
 };
 
 export default TeslaCompositor;

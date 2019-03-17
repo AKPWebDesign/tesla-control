@@ -20,12 +20,12 @@ const VehicleListPage = () => {
   });
 
   if (vehicles === null) {
-    return "Loading...";
+    return 'Loading...';
   }
 
   return (
     <div className={styles.vehicleListPage}>
-      {vehicles.map((vehicle) => (
+      {vehicles.map(vehicle => (
         <a href={`/vehicle/${vehicle.id}`} className={styles.vehicleLink}>
           <VehicleDisplay vehicle={vehicle} key={vehicle.id} />
         </a>

@@ -21,7 +21,7 @@ const useTeslaAuth = () => {
 
     return () => {
       unsubscribe();
-    }
+    };
   });
 
   return { isLoggedIn, userData };

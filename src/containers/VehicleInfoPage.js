@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import TeslaAPI from '../adapters/TeslaAPI';
 import useTeslaAuth from '../hooks/useTeslaAuth';
 import optionCodes from '../static-data/optionCodes.json';
@@ -21,7 +22,8 @@ const VehicleInfoPage = ({ match }) => {
 
     if (vehicle !== null && vehicleData === null) {
       if (vehicle.state === 'asleep') {
-        return setVehicleData('💤💤💤 car is tired now 💤💤💤');
+        setVehicleData('💤💤💤 car is tired now 💤💤💤');
+        return;
       }
       TeslaAPI.getVehicleData(match.params.vehicleId)
         .then(_ => setVehicleData(_));
@@ -29,18 +31,20 @@ const VehicleInfoPage = ({ match }) => {
   });
 
   if (vehicle === null) {
-    return "Loading...";
+    return 'Loading...';
   }
 
   return (
     <div className={styles.vehicleInfoPage}>
       { vehicle.state === 'asleep' && (
-        <button onClick={() => TeslaAPI.wakeUp(vehicle.id)}>Wake Up</button>
+        <button type="button" onClick={() => TeslaAPI.wakeUp(vehicle.id)}>Wake Up</button>
       )}
       <pre>{JSON.stringify(vehicle, null, 2)}</pre>
-      <br /><br />
+      <br />
+      <br />
       <pre>{JSON.stringify(vehicleData, null, 2)}</pre>
-      <br /><br />
+      <br />
+      <br />
       <h2>Option Codes</h2>
       <table className="ui small striped compact padded celled table">
         <thead>
@@ -51,7 +55,7 @@ const VehicleInfoPage = ({ match }) => {
           </tr>
         </thead>
         <tbody>
-          {vehicle['option_codes'].split(',').map(code => {
+          {vehicle.option_codes.split(',').map((code) => {
             const optionCode = optionCodes[code] || {};
             return (
               <tr key={code} className={`${optionCode.code ? '' : 'warning'}`}>
@@ -65,6 +69,14 @@ const VehicleInfoPage = ({ match }) => {
       </table>
     </div>
   );
+};
+
+VehicleInfoPage.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      vehicleId: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default VehicleInfoPage;

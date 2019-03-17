@@ -6,7 +6,7 @@ const TESLA_CLIENT_SECRET = 'c7257eb71a564034f9419ee651c7d0e5f7aa6bfbd18bafb5c5c
 
 const teslaApiClient = axios.create({
   baseURL: 'https://cors.akp.tools/https://owner-api.teslamotors.com',
-})
+});
 
 class TeslaAPI {
   constructor() {
@@ -23,17 +23,17 @@ class TeslaAPI {
         client_id: TESLA_CLIENT_ID,
         client_secret: TESLA_CLIENT_SECRET,
         email: username,
-        password: password,
+        password,
       },
     })
       .then(({ data }) => {
         this.notifySubscribers(true, data);
         return data;
       })
-      .catch(e => {
+      .catch((e) => {
         this.notifySubscribers(false);
-        console.log('login error :(');
-        console.error(e);
+        console.log('login error :('); // eslint-disable-line no-console
+        console.error(e); // eslint-disable-line no-console
       });
   }
 
@@ -56,16 +56,19 @@ class TeslaAPI {
 
     return () => {
       delete this.subscribers[id];
-    }
+    };
   }
 
   authCall(config) {
     if (!this.auth) return Promise.resolve(null);
-    config.headers = {
-      'Authorization': `Bearer ${this.auth}`,
+    const authenticatedConfig = {
+      ...config,
+      headers: {
+        Authorization: `Bearer ${this.auth}`,
+      },
     };
 
-    return teslaApiClient(config).then(({ data }) => data.response);
+    return teslaApiClient(authenticatedConfig).then(({ data }) => data.response);
   }
 
   getVehicles() {
@@ -83,14 +86,14 @@ class TeslaAPI {
   getVehicleData(id) {
     return this.authCall({
       url: `/api/1/vehicles/${id}/vehicle_data`,
-    })
+    });
   }
 
   wakeUp(id) {
     return this.authCall({
       method: 'post',
       url: `/api/1/vehicles/${id}/wake_up`,
-    })
+    });
   }
 }
 

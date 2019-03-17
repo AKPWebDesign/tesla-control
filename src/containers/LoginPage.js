@@ -13,7 +13,7 @@ const LoginPage = () => {
   const onLogin = (e) => {
     e.preventDefault();
     TeslaAPI.login(username, password);
-  }
+  };
 
   if (isLoggedIn) {
     return <Redirect to="/vehicles" />;
@@ -32,14 +32,14 @@ const LoginPage = () => {
             name="username"
             value={username}
             placeholder="Email Address"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
           />
           <input
             type="password"
             name="password"
             value={password}
             placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
           />
           <button
             type="submit"
@@ -49,7 +49,7 @@ const LoginPage = () => {
         </form>
       </div>
     </div>
-  )
+  );
 };
 
 export default LoginPage;
