@@ -6,9 +6,6 @@ const TESLA_CLIENT_SECRET = 'c7257eb71a564034f9419ee651c7d0e5f7aa6bfbd18bafb5c5c
 
 const teslaApiClient = axios.create({
   baseURL: 'https://cors.akp.tools/https://owner-api.teslamotors.com',
-  headers: {
-    'User-Agent': 'TeslaControl (teslacontrol@akpwebdesign.com)',
-  }
 })
 
 class TeslaAPI {
@@ -74,6 +71,12 @@ class TeslaAPI {
   getVehicles() {
     return this.authCall({
       url: '/api/1/vehicles',
+    });
+  }
+
+  getVehicle(id) {
+    return this.authCall({
+      url: `/api/1/vehicles/${id}`,
     });
   }
 

@@ -1,0 +1,31 @@
+.vehicleDisplayContainer {
+  position: relative;
+  width: 700px;
+  height: 300px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
+
+  transition: all 0.25s ease-in-out;
+
+  &:hover {
+    background-color: #ddd;
+    cursor: pointer;
+  }
+
+  img {
+    position: absolute;
+    top: -60px;
+  }
+
+  .info {
+    position: absolute;
+    z-index: 10;
+    top: 10px;
+    left: 20px;
+    font-size: 2em;
+    line-height: 1.25em;
+  }
+}

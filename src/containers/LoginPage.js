@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import TeslaAPI from '../adapters/TeslaAPI';
+import useTeslaAuth from '../hooks/useTeslaAuth';
 import TeslaLogo from '../images/tesla-red.png';
 import styles from './LoginPage.less';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { isLoggedIn } = useTeslaAuth();
 
   const onLogin = (e) => {
     e.preventDefault();
     TeslaAPI.login(username, password);
+  }
+
+  if (isLoggedIn) {
+    return <Redirect to="/vehicles" />;
   }
 
   return (

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import TeslaAPI from '../adapters/TeslaAPI';
 import useTeslaAuth from '../hooks/useTeslaAuth';
 import optionCodes from '../static-data/optionCodes.json';
-import './VehicleInfoPage.css';
+import styles from './VehicleInfoPage.css';
 
-const VehicleInfoPage = () => {
+const VehicleInfoPage = ({ match }) => {
   const { userData } = useTeslaAuth();
-  const [vehicles, setVehicles] = useState(null);
+  const [vehicle, setVehicle] = useState(null);
   const [vehicleData, setVehicleData] = useState(null);
 
   useEffect(() => {
@@ -14,31 +14,30 @@ const VehicleInfoPage = () => {
       return;
     }
 
-    if (vehicles === null) {
-      TeslaAPI.getVehicles()
-        .then(_ => setVehicles(_));
+    if (vehicle === null) {
+      TeslaAPI.getVehicle(match.params.vehicleId)
+        .then(_ => setVehicle(_));
     }
 
-    if (vehicles !== null && vehicleData === null) {
-      if (vehicles[0].state === 'asleep') {
+    if (vehicle !== null && vehicleData === null) {
+      if (vehicle.state === 'asleep') {
         return setVehicleData('💤💤💤 car is tired now 💤💤💤');
       }
-      TeslaAPI.getVehicleData(vehicles[0].id)
+      TeslaAPI.getVehicleData(match.params.vehicleId)
         .then(_ => setVehicleData(_));
     }
   });
 
-  if (vehicles === null) {
+  if (vehicle === null) {
     return "Loading...";
   }
 
   return (
-    <div className="vehicle-info-page">
-      <button onClick={() => TeslaAPI.logout()}>Log Out</button>
-      { vehicles[0].state === 'asleep' && (
-        <button onClick={() => TeslaAPI.wakeUp(vehicles[0].id)}>Wake Up</button>
+    <div className={styles.vehicleInfoPage}>
+      { vehicle.state === 'asleep' && (
+        <button onClick={() => TeslaAPI.wakeUp(vehicle.id)}>Wake Up</button>
       )}
-      <pre>{JSON.stringify(vehicles, null, 2)}</pre>
+      <pre>{JSON.stringify(vehicle, null, 2)}</pre>
       <br /><br />
       <pre>{JSON.stringify(vehicleData, null, 2)}</pre>
       <br /><br />
@@ -52,7 +51,7 @@ const VehicleInfoPage = () => {
           </tr>
         </thead>
         <tbody>
-          {vehicles[0]['option_codes'].split(',').map(code => {
+          {vehicle['option_codes'].split(',').map(code => {
             const optionCode = optionCodes[code] || {};
             return (
               <tr key={code} className={`${optionCode.code ? '' : 'warning'}`}>
