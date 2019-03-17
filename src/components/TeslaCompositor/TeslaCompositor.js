@@ -9,7 +9,7 @@ export const viewOptions = {
   WHEEL: 'STUD_WHEEL',
 };
 
-const TeslaCompositor = ({ optionCodes, size = 1920, view = viewOptions.TQTR }) => {
+const TeslaCompositor = ({ optionCodes, size, view }) => {
   let model = null;
 
   if (optionCodes.includes('MDLS') || optionCodes.includes('MS03')) {
